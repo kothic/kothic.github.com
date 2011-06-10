@@ -42,10 +42,10 @@ L.TileLayer.Kothic = L.TileLayer.Canvas.extend({
 	
 	getDebugStr: function(debugInfo, x, y, zoom) {
 		return '<b>tile ' + x + ':' + y + ':' + zoom + '</b><br />' +
-			'<table><tr><td>' + debugInfo.layersStyled + '</td><td>layers styled</td></tr>' +
-			'<tr><td>' + debugInfo.mapRendered + '</td><td>map rendered</td></tr>' +
-			'<tr><td>' + debugInfo.iconsAndTextRendered + '</td><td>icons/text rendered</td></tr>' +
-			'<tr><td>' + debugInfo.total + '</td><td>total</td></tr></table>';
+			'<table><tr><td>' + debugInfo.layersStyled + ' ms</td><td>layers styled</td></tr>' +
+			'<tr><td>' + debugInfo.mapRendered + ' ms</td><td>map rendered</td></tr>' +
+			'<tr><td>' + debugInfo.iconsAndTextRendered + ' ms</td><td>icons/text rendered</td></tr>' +
+			'<tr><td>' + debugInfo.total + ' ms</td><td>total</td></tr></table>';
 	},
 	
 	getDebugMessages: function() {
