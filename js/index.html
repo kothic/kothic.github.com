@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+	<title>A canvas Map of Minsk</title>
+	
+	<link rel="stylesheet" href="leaflet/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="leaflet/leaflet.ie.css" /><![endif]-->
+	
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	
+	<script src="leaflet/leaflet.js"></script>
+	<script src="kothic.js"></script>
+	<script src="kothic-leaflet.js"></script>
+
+	<!-- Kothic style -->
+	<script src="osmosnimki.js"></script>
+	
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			}
+		html, body, #map {
+			height: 100%;
+			}
+		#debug {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background: rgba(255,255,255,0.7);
+			border: 1px solid #ddd;
+			padding: 10px;
+			z-index: 10000;
+			font: 12px/1.4 Verdana, sans-serif;
+			width: 160px;
+			}
+		#tileperf {
+			font: 10px/1 Verdana, sans-serif;
+			}
+		#tileperf table {
+			margin-top: 3px;
+			}
+		#mapnik {
+			margin-bottom: 10px;
+			}
+		table {
+			border-collapse: collapse;
+			}
+		table td {
+			padding-right: 10px;
+			}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<div id="debug">
+		<p>OpenStreetMap data rendered on the browser using <a href="http://github.com/kothic/kothic-js">Kothic JS</a></p>
+		<button id="mapnik" onclick="toggleMapnik()">Show Mapnik</button>
+		<div id="tileperf">Rendering...</div>
+	</div>
+	<script>
+		var mapnik = new L.TileLayer('http://tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png', {
+			attribution: "Map data &copy; 2011 OpenStreetMap contributors, Imagery by <a href='http://osmosnimki.ru'>osmosnimki.ru</a>",
+			maxZoom: 22
+		});
+		
+		var kothic = new L.TileLayer.Kothic({minZoom: 8});
+		
+		kothic.setAdditionalStyle(function(style, tags, zoom, type, sel) {
+			//...
+		});
+		
+		var map = new L.Map('map', {
+			center: new L.LatLng(53.9, 27.55), // Minsk 
+			zoom: 12
+		});
+
+		kothic.on('load', function() {
+			var messages = kothic.getDebugMessages(),
+				len = messages.length,
+				message = messages.slice(Math.max(len - 4, 0), len).join('<br />');
+			
+			document.getElementById('tileperf').innerHTML = message;
+		});
+		
+		MapCSS.onImagesLoad = function() {
+			map.addLayer(kothic);
+		};
+		MapCSS.loadImages("osmosnimki-maps", "http://osmosnimki.ru/leaf/icons/osmosnimki.png");
+		
+		
+		var mapnikVisible = false,
+			button = document.getElementById('mapnik');
+		
+		function toggleMapnik() {
+			if (mapnikVisible) {
+				map.removeLayer(mapnik);
+				button.innerHTML = 'Show Mapnik';
+			} else {
+				map.addLayer(mapnik);
+				button.innerHTML = 'Hide Mapnik';
+			}
+			mapnikVisible = !mapnikVisible;
+		}
+	</script>
+</body>
+</html>
