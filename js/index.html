@@ -89,9 +89,9 @@
 		
 		var kothic = new L.TileLayer.Kothic({minZoom: 8});
 		
-		kothic.setAdditionalStyle(function(style, tags, zoom, type, sel) {
+		/*kothic.setAdditionalStyle(function(style, tags, zoom, type, sel) {
 			//...
-		});
+		});*/
 		
 		var map = new L.Map('map', {
 			center: new L.LatLng(53.9, 27.55), // Minsk 
@@ -109,7 +109,7 @@
 		MapCSS.onImagesLoad = function() {
 			map.addLayer(kothic);
 		};
-		MapCSS.loadImages("osmosnimki-maps", "http://osmosnimki.ru/leaf/icons/osmosnimki.png");
+		MapCSS.preloadSpriteImage("osmosnimki-maps", "http://osmosnimki.ru/leaf/icons/osmosnimki.png");
 		
 		
 		var mapnikVisible = false,
