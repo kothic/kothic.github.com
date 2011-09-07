@@ -1,0 +1,47 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+html, body, #map {
+	height: 100%;
+}
+#debug {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: rgba(255,255,255,0.7);
+	border: 1px solid #ddd;
+	padding: 15px 10px 10px;
+	z-index: 10000;
+	width: 160px;
+}
+#about {
+	font-size: 14px;
+	line-height: 1.3;
+}
+#tileperf {
+	font-size: 11px;
+	line-height: 1.3;
+}
+#mapnik {
+	margin-bottom: 15px;
+}
+#debug p {
+    margin-bottom: 10px;
+}
+table {
+	margin: 3px 0 0 0;
+	border-collapse: collapse;
+}
+table td {
+    padding: 0 10px 0 0;
+}
+tbody tr:nth-child(even) td, tbody tr.even td {
+	background: none;
+}
+#debug label {
+	font-weight: normal;
+}
+#debug hr {
+	margin-bottom: 10px;
+}
