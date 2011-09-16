@@ -8,6 +8,9 @@
 	
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	
+	    <!-- jQuery. It's not required for Kothic, but still useful for this example -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+	
 	<script src="leaflet/leaflet.js"></script>
 	<script src="kothic.js"></script>
 	<script src="kothic-leaflet.js"></script>
@@ -40,7 +43,7 @@
 			font-size: 14px;
 			line-height: 1.3;
 			}
-		#tileperf {
+		#trace {
 			font-size: 11px;
 			line-height: 1.3;
 			}
@@ -79,7 +82,7 @@
 			<input type="checkbox" onclick="toggleAddressing()" id="addressing" /><label for="addressing"> Highlight addressing</label>
 		</p>
 		<hr />
-		<div id="tileperf">Rendering...</div>
+		<div id="trace">Rendering...</div>
 	</div>
 	<script>
 		var mapnik = new L.TileLayer('http://tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png', {
@@ -99,11 +102,11 @@
 		});
 
 		kothic.on('load', function() {
-			var messages = kothic.getDebugMessages(),
-				len = messages.length,
-				message = messages.slice(Math.max(len - 4, 0), len).join('<br />');
-			
-			document.getElementById('tileperf').innerHTML = message;
+      var messages = kothic.getDebugMessages(),
+        len = messages.length,
+        messages = messages.slice(Math.max(len - 4, 0), len);
+
+      showMessages(messages);
 		});
 		
 		MapCSS.onImagesLoad = function() {
@@ -114,6 +117,50 @@
 		
 		var mapnikVisible = false,
 			button = document.getElementById('mapnik');
+		
+		function showMessages(messages) {
+      $('#trace').empty();
+      $(messages).each(function(index, msg) {
+        $('<div>', {
+          class: 'tileIndex', 
+          text: msg.x + ":" + msg.y + ":" + msg.zoom
+        }).appendTo($('#trace'));
+
+        var stats = $('<table>', {
+          style: 'display: none'
+        }).appendTo($('#trace'));
+            for (var k in msg.stats) {
+                if (!msg.stats.hasOwnProperty(k)) {
+                    continue;
+                }
+
+          $("<tr>").append($("<td>", {
+            'text': msg.stats[k]
+          })).append($("<td>", {
+            'text': k
+          })).appendTo(stats);
+            }
+
+        var log = $('<table>').appendTo($('#trace')),
+          t0 = msg.events[0].timestamp,
+          t1 = msg.events[msg.events.length - 1].timestamp,
+          total = t1 - t0;
+            for (var i = 1; i < msg.events.length; i++) {
+
+          $("<tr>").append($("<td>", {
+            class: 'time',
+            text: (msg.events[i].timestamp - t0) + " ms"
+          })).append($("<td>", {
+            text: msg.events[i].message
+          })).appendTo(log);
+
+          t0 = msg.events[i].timestamp;
+            }
+
+            log.append('<tr><th>' + total + 'ms</th><td>total</td></tr>');
+      });
+      
+    }
 		
 		function toggleMapnik() {
 			if (mapnikVisible) {
