@@ -14,6 +14,7 @@
 	<script src="leaflet/leaflet.js"></script>
 	<script src="kothic.js"></script>
 	<script src="kothic-leaflet.js"></script>
+	<script src="permalink.js"></script>
 
 	<!-- Kothic style -->
 	<script src="osmosnimki.js"></script>
@@ -100,6 +101,7 @@
 			center: new L.LatLng(53.9, 27.55), // Minsk 
 			zoom: 12
 		});
+		map.addControl(new L.Control.Permalink());
 
 		kothic.on('load', function() {
       var messages = kothic.getDebugMessages(),
