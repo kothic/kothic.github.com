@@ -3,24 +3,22 @@
 <head>
 	<title>A canvas Map of Minsk</title>
 	
-	<link rel="stylesheet" href="leaflet/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="leaflet/leaflet.ie.css" /><![endif]-->
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" /><![endif]-->
 	
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	
 	    <!-- jQuery. It's not required for Kothic, but still useful for this example -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-	
-	<script src="leaflet/leaflet.js"></script>
+
+	<!-- Leaflet -->
+	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 	<script src="kothic.js"></script>
 	<script src="kothic-leaflet.js"></script>
 	<script src="permalink.js"></script>
 
 	<!-- Kothic style -->
 	<script src="osmosnimki.js"></script>
-	
-	<link rel="stylesheet" href="blueprint/screen.css" type="text/css" media="screen, projection">
-	<!--[if lt IE 8]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 	
   	<style>
 		body {
@@ -77,11 +75,6 @@
 	<div id="debug">
 		<p id="about">OpenStreetMap data rendered <em>on the browser</em> using <strong><a href="http://github.com/kothic/kothic-js">Kothic JS</a></strong><br /></p>
 		<button id="mapnik" onclick="toggleMapnik()">Compare with Mapnik</button>
-		<hr />
-		<p>
-			<input type="checkbox" onclick="toggleNonames()" id="nonames" /><label for="nonames"> Highlight no-names</label><br />
-			<input type="checkbox" onclick="toggleAddressing()" id="addressing" /><label for="addressing"> Highlight addressing</label>
-		</p>
 		<hr />
 		<div id="trace">Rendering...</div>
 	</div>
@@ -173,39 +166,6 @@
 				button.innerHTML = 'Hide Mapnik';
 			}
 			mapnikVisible = !mapnikVisible;
-		}
-		
-		function toggleNonames() {
-			if (document.getElementById('nonames').checked) {
-				kothic.setAdditionalStyle(function(style, tags, zoom, type, sel) {
-					var names = ['primary', 'secondary', 'tertiary', 'residential'];
-	
-					if (names.indexOf(tags['highway']) != -1 && !tags['ref'] && !tags['name']) {
-						style['default']['color'] = 'red';
-					}
-				});
-			} else {
-				kothic.setAdditionalStyle(null);
-			}
-		}
-		
-		function toggleAddressing() {
-			if (document.getElementById('addressing').checked) {
-				kothic.setAdditionalStyle(function(style, tags, zoom, type, sel) {
-					var s = style['default'];
-					if (tags.building == 'yes') {
-						if (tags.name || tags['addr:housename']) {
-							s['fill-color'] = 'blue';
-						} else if (tags['addr:housenumber']) {
-							s['fill-color'] = 'green';
-						} else {
-							s['fill-color'] = 'red';
-						}
-					}
-				});
-			} else {
-				kothic.setAdditionalStyle(null);
-			}
 		}
 	</script>
 </body>
